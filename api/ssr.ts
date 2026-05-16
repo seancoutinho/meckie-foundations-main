@@ -1,46 +1,26 @@
-// Vercel Node serverless handler: forwards HTTP to TanStack Start's built server entry.
-import path from "node:path";
-import { pathToFileURL } from "node:url";
+// Vercel Node handler: proxies HTTP into TanStack Start's built SSR entry.
+//
+// IMPORTANT: Import the SSR bundle statically (not `import(dynamicPath)`).
+// `@vercel/node` file-traces dependencies from this file only; a runtime
+// `import()` skips React / Tanstack / etc., so Lambda can ship without those
+// packages and every route returns the app's generic 500 HTML.
 
-// Prefer final `vite build` output so manifest/hashes match `outputDirectory` (dist/client).
-const SERVER_ENTRY_RELATIVE_PATHS = [
-  "dist/server/server.js",
-  "dist/server/index.js",
-  "dist/server/entry.mjs",
-  "dist-ssr/server/server.js",
-  "dist-ssr/server/index.js",
-  "dist-ssr/server/entry.mjs",
-  "dist-ssr/entry.mjs",
-];
+// @ts-expect-error — production build emits this module before Vercel bundles the function.
+import server from "../dist/server/server.js";
 
-let serverModule: {
-  fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
-} | null = null;
+import type { IncomingMessage, ServerResponse } from "node:http";
 
-async function loadServerModule() {
-  if (serverModule) return serverModule;
-  const cwd = process.cwd();
-  let lastErr: unknown;
-  for (const rel of SERVER_ENTRY_RELATIVE_PATHS) {
-    try {
-      const fileUrl = pathToFileURL(path.join(cwd, rel)).href;
-      const mod = (await import(fileUrl)) as { default?: typeof serverModule };
-      const entry = mod.default ?? (mod as unknown as typeof serverModule);
-      serverModule = entry;
-      return serverModule;
-    } catch (err) {
-      lastErr = err;
-    }
-  }
-  throw (
-    lastErr ??
-    new Error("Server entry not found. Run production build and check dist/server output.")
-  );
+function inferRequestOrigin(req: IncomingMessage): string {
+  const host = (req.headers.host as string | undefined) ?? "localhost";
+  const forwarded = req.headers["x-forwarded-proto"];
+  const raw = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+  const first = raw?.split(",")[0]?.trim();
+  const scheme =
+    first === "https" || first === "http" ? first : host.startsWith("localhost") ? "http" : "https";
+  return `${scheme}://${host}`;
 }
 
-async function readRequestBody(req: {
-  on: typeof import("node:stream").Readable.prototype.on;
-}): Promise<Buffer | undefined> {
+async function readRequestBody(req: IncomingMessage): Promise<Buffer | undefined> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
     req.on("data", (chunk: Buffer) => chunks.push(Buffer.from(chunk)));
@@ -49,20 +29,14 @@ async function readRequestBody(req: {
   });
 }
 
-export default async function handler(
-  req: import("node:http").IncomingMessage,
-  res: import("node:http").ServerResponse,
-) {
+export default async function handler(req: IncomingMessage, res: ServerResponse) {
   try {
-    const server = await loadServerModule();
-
     if (!server || typeof server.fetch !== "function") {
-      throw new Error("Loaded server module does not export a fetch handler.");
+      throw new Error("SSR bundle does not export fetch.");
     }
 
-    const host = (req.headers.host as string | undefined) ?? "localhost";
     const rawUrl = req.url ?? "/";
-    const url = new URL(rawUrl, `http://${host}`);
+    const url = new URL(rawUrl, `${inferRequestOrigin(req)}/`);
 
     const headers = new Headers();
     for (const [k, v] of Object.entries(req.headers)) {
