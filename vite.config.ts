@@ -12,4 +12,22 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  // Ensure SSR build treats Node builtins and problematic tanstack modules as external
+  vite: {
+    ssr: {
+      // Keep Node builtins external, but ensure TanStack server packages are
+      // bundled (noExternal) so their SSR-specific ESM code is transformed
+      // correctly instead of being rewritten to browser externals.
+      external: ["node:stream", "node:stream/web"],
+      noExternal: ["@tanstack/router-core", "@tanstack/start-server-core"],
+    },
+    build: {
+      rollupOptions: {
+        // Treat any `node:` builtin imports as external so Rollup doesn't try to
+        // replace them with browser shims. This keeps Node builtins resolved
+        // at runtime in the Node SSR environment.
+        external: (id: string) => id.startsWith('node:'),
+      },
+    },
+  },
 });
