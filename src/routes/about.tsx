@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/Reveal";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHeader } from "@/components/PageShell";
-import service from "@/assets/service-driveways.jpg";
+
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -60,7 +60,14 @@ function AboutPage() {
       <Reveal delay={100}>
       <section className="container-luxe">
         <div className="relative aspect-[16/8] overflow-hidden">
-          <img src={service} loading="lazy" width={1920} height={1100} alt="Architectural driveway installation" className="absolute inset-0 h-full w-full object-cover" />
+          <img
+  src="/assets/service-driveways.jpg"
+  loading="lazy"
+  width={1920}
+  height={1100}
+  alt="Architectural driveway installation"
+  className="absolute inset-0 h-full w-full object-cover"
+/>
         </div>
       </section>
       </Reveal>

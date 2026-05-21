@@ -1,58 +1,321 @@
-import driveway from "@/assets/product-driveway-pavers.jpg";
-import cobbles from "@/assets/product-cobbles.jpg";
-import hexagonal from "@/assets/product-hexagonal.jpg";
-import coping from "@/assets/product-coping.jpg";
-import cladding from "@/assets/product-cladding.jpg";
-import feature from "@/assets/product-feature.jpg";
-
 export type ProductCategory =
-  | "Driveway Pavers"
-  | "Cobbles & Slabs"
-  | "Hexagonal Pavers"
-  | "Coping & Edging"
-  | "Blocks & Cladding"
-  | "Feature Pieces";
-
-export const CATEGORIES: ProductCategory[] = [
-  "Driveway Pavers",
-  "Cobbles & Slabs",
-  "Hexagonal Pavers",
-  "Coping & Edging",
-  "Blocks & Cladding",
-  "Feature Pieces",
-];
+  | "Pavers"
+  | "Slabs"
+  | "Coping"
+  | "Cladding"
+  | "Blocks"
+  | "Kerbstones"
+  | "Feature Products";
 
 export type Product = {
   id: string;
   name: string;
   category: ProductCategory;
   price: string;
-  spec: string;
+  size: string;
   description: string;
   image: string;
+  featured?: boolean;
 };
 
 export const PRODUCTS: Product[] = [
-  { id: "dp-60",   name: "Standard Driveway Paver 60mm", category: "Driveway Pavers",  price: "$0.85 / piece", spec: "200×100×60mm · Charcoal, Grey, Terracotta", description: "The architectural workhorse — engineered for daily vehicle load with a refined surface finish.", image: driveway },
-  { id: "dp-80",   name: "Heavy-Duty Paver 80mm",        category: "Driveway Pavers",  price: "$1.10 / piece", spec: "200×100×80mm · Reinforced concrete",        description: "Reinforced profile for high-traffic and commercial entrances. Quiet underfoot, decisive in load.", image: driveway },
-  { id: "dp-bond", name: "Bond Paver",                   category: "Driveway Pavers",  price: "$0.95 / piece", spec: "225×112×60mm · Interlocking",               description: "A tighter geometric weave for residential driveways with a contemporary edge.", image: driveway },
+  {
+    id: "3d-arrow",
+    name: "3D Arrow Pavers",
+    category: "Pavers",
+    price: "$16 per square meter",
+    size: "33 units / 60mm",
+    description:
+      "Modern geometric paving solution for premium residential and commercial spaces.",
+    image: "/assets/3d-arrow.png",
+    featured: true,
+  },
 
-  { id: "cs-cob",  name: "Antique Cobble",               category: "Cobbles & Slabs",  price: "$1.20 / piece", spec: "100×100×60mm · Tumbled finish",             description: "Hand-tumbled edges for a quietly aged, courtyard-quality surface.", image: cobbles },
-  { id: "cs-slab", name: "Architectural Slab 400",       category: "Cobbles & Slabs",  price: "$3.40 / piece", spec: "400×400×40mm · Smooth honed",               description: "Generous format for terraces and patios — restrained, modern, monumental.", image: cobbles },
-  { id: "cs-mini", name: "Mini Cobble",                  category: "Cobbles & Slabs",  price: "$0.65 / piece", spec: "100×50×60mm · Sandstone, Ash",              description: "A finer scale for pathways, courtyards and decorative bands.", image: cobbles },
+  {
+    id: "dogbone",
+    name: "Dog Bone Pavers",
+    category: "Pavers",
+    price: "$15",
+    size: "25 units / 50mm",
+    description:
+      "Interlocking paving system engineered for durability and load resistance.",
+    image: "/assets/dogbone.png",
+  },
 
-  { id: "hx-200",  name: "Hexagonal Paver 200",          category: "Hexagonal Pavers", price: "$1.45 / piece", spec: "200mm flat-to-flat · 60mm thick",           description: "Six-sided geometry that draws a precise, architectural line through any landscape.", image: hexagonal },
-  { id: "hx-150",  name: "Hexagonal Paver 150",          category: "Hexagonal Pavers", price: "$1.10 / piece", spec: "150mm flat-to-flat · 50mm thick",           description: "A finer hex module for pedestrian areas and feature courtyards.", image: hexagonal },
+  {
+    id: "herringbone",
+    name: "Herringbone Pavers",
+    category: "Pavers",
+    price: "$16",
+    size: "64 units / 50mm",
+    description:
+      "Classic herringbone paving layout for elegant driveways and pathways.",
+    image: "/assets/herringbone.png",
+  },
 
-  { id: "ce-bull", name: "Bullnose Coping",              category: "Coping & Edging",  price: "$4.20 / metre", spec: "300×600×40mm · Honed white",                description: "A soft, rounded profile for pool perimeters and elevated terraces.", image: coping },
-  { id: "ce-edge", name: "Garden Edge Strip",            category: "Coping & Edging",  price: "$2.80 / metre", spec: "1000×80×40mm · Charcoal, Stone",            description: "Disciplined linework — defines lawns, beds and paved transitions.", image: coping },
-  { id: "ce-step", name: "Step Tread",                   category: "Coping & Edging",  price: "$6.50 / piece", spec: "1200×350×50mm · Anti-slip",                 description: "Long-format treads for monolithic, modern stair runs.", image: coping },
+  {
+    id: "slate",
+    name: "Slate Tiles",
+    category: "Slabs",
+    price: "$15",
+    size: "300×300mm × 20mm",
+    description:
+      "Textured slate-finish tiles for refined outdoor and landscape applications.",
+    image: "/assets/slate.png",
+  },
 
-  { id: "bc-stack", name: "Stacked Stone Cladding",      category: "Blocks & Cladding",price: "$36 / m²",      spec: "Sandstone, Slate · Ledged finish",          description: "Architectural skin for perimeter walls, columns and feature elevations.", image: cladding },
-  { id: "bc-block", name: "Architectural Block 200",     category: "Blocks & Cladding",price: "$1.10 / piece", spec: "390×190×190mm · Hollow",                    description: "A precision masonry unit — engineered for boundary walls and screens.", image: cladding },
-  { id: "bc-cap",   name: "Wall Cap",                    category: "Blocks & Cladding",price: "$3.20 / piece", spec: "300×300×60mm · Weathered",                  description: "A clean architectural cap to crown perimeter walls.", image: cladding },
+  {
+    id: "pillar-coping",
+    name: "Pillar Coping",
+    category: "Coping",
+    price: "$7",
+    size: "500mm × 500mm",
+    description:
+      "Protective and decorative pillar coping for premium perimeter walls.",
+    image: "/assets/pillar-coping.png",
+  },
 
-  { id: "fp-med",  name: "Compass Medallion",            category: "Feature Pieces",   price: "$185 / piece",  spec: "Ø 1200mm · Cast concrete relief",           description: "A centrepiece for forecourts and entrance driveways. One singular gesture.", image: feature },
-  { id: "fp-fan",  name: "Radial Fan Set",               category: "Feature Pieces",   price: "$240 / set",    spec: "Ø 2400mm · 32 pieces",                      description: "A full radial composition for circular driveways and grand entrances.", image: feature },
-  { id: "fp-band", name: "Inlay Band",                   category: "Feature Pieces",   price: "$28 / metre",   spec: "200mm wide · Contrasting tone",             description: "A linear inlay to articulate paths, thresholds and boundaries.", image: feature },
+  {
+    id: "giant-feet",
+    name: "Giant Feet",
+    category: "Feature Products",
+    price: "$3",
+    size: "600mm × 60mm",
+    description:
+      "Decorative stepping slabs designed for landscaped outdoor environments.",
+    image: "/assets/giant-feet.png",
+  },
+
+  {
+    id: "breeze-block",
+    name: "Breeze Block",
+    category: "Blocks",
+    price: "$2",
+    size: "300 × 300mm / 120mm",
+    description:
+      "Decorative ventilation block for architectural facades and feature walls.",
+    image: "/assets/breeze-block.png",
+    featured: true,
+  },
+
+  {
+    id: "cobble-slab-400",
+    name: "Cobble Slabs",
+    category: "Slabs",
+    price: "$2.50",
+    size: "400 × 400mm / 50mm",
+    description:
+      "Heavy-duty outdoor slabs with a premium cobbled surface texture.",
+    image: "/assets/cobble-slab-400.png",
+  },
+
+  {
+    id: "twist-hex",
+    name: "Twist Hexagonal",
+    category: "Pavers",
+    price: "$16",
+    size: "28 units / 50mm",
+    description:
+      "Distinctive geometric paving pattern for contemporary outdoor spaces.",
+    image: "/assets/twist-hex.png",
+  },
+
+  {
+    id: "woodlock",
+    name: "Woodlock Slipper",
+    category: "Feature Products",
+    price: "$7",
+    size: "700mm × 320mm",
+    description:
+      "Wood-textured paving feature designed for premium landscape finishes.",
+    image: "/assets/woodlock.png",
+  },
+
+  {
+    id: "doomed-cladding",
+    name: "Doomed Cladding",
+    category: "Cladding",
+    price: "$18",
+    size: "230 × 60mm / 10mm",
+    description:
+      "Decorative wall cladding system with textured architectural finish.",
+    image: "/assets/doomed-cladding.png",
+  },
+
+  {
+    id: "cobble-slab-500",
+    name: "Cobble Slabs",
+    category: "Slabs",
+    price: "$4.50",
+    size: "500 × 500mm / 50mm",
+    description:
+      "Large-format premium cobble slabs for luxury outdoor environments.",
+    image: "/assets/cobble-slab-500.png",
+  },
+
+  {
+    id: "kerbstone",
+    name: "Municipal Kerbstone",
+    category: "Kerbstones",
+    price: "$7",
+    size: "300 × 1000mm / 100mm",
+    description:
+      "Durable kerbstones engineered for roads, pavements, and edging systems.",
+    image: "/assets/kerbstone.png",
+  },
+
+  {
+    id: "single-cobbles",
+    name: "Single Cobbles",
+    category: "Pavers",
+    price: "$16",
+    size: "100 units / 100 × 100mm",
+    description:
+      "Premium cobble paving units suitable for courtyards and pathways.",
+    image: "/assets/single-cobbles.png",
+  },
+
+  {
+    id: "maxi-block",
+    name: "Maxi Block",
+    category: "Blocks",
+    price: "$0.60",
+    size: "280mm × 130mm / 90mm",
+    description:
+      "Reliable structural block suitable for perimeter wall construction.",
+    image: "/assets/maxi-block.png",
+  },
+
+  {
+    id: "wall-coping",
+    name: "Wall Coping",
+    category: "Coping",
+    price: "$7",
+    size: "230mm × 1000mm",
+    description:
+      "Protective coping finish for perimeter and boundary walls.",
+    image: "/assets/wall-coping.png",
+  },
+
+  {
+    id: "octagon-slabs",
+    name: "Octagon Slabs",
+    category: "Slabs",
+    price: "$16",
+    size: "6.25 units × 60mm",
+    description:
+      "Decorative octagonal paving slabs for premium outdoor applications.",
+    image: "/assets/octagon.png",
+  },
+
+  {
+    id: "extra-1",
+    name: "Milano Pavers",
+    category: "Feature Products",
+    price: " $18 per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra1.png",
+  },
+
+  {
+    id: "extra-2",
+    name: "Basket Pavers",
+    category: "Feature Products",
+    price: "$18 per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra2.png",
+  },
+
+  {
+    id: "extra-3",
+    name: "Premium Product 03",
+    category: "Feature Products",
+    price: "TBA",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra3.png",
+  },
+
+  {
+    id: "extra-4",
+    name: "Premium Product 04",
+    category: "Feature Products",
+    price: "TBA",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra4.png",
+  },
+
+  {
+    id: "extra-5",
+    name: "Breeze Block",
+    category: "Feature Products",
+    price: "$2",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra5.png",
+  },
+
+  {
+    id: "extra-6",
+    name: "Smooth Round dumble Cobble ",
+    category: "Feature Products",
+    price: "$ 18 per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra6.png",
+  },
+
+  {
+    id: "extra-7",
+    name: "Outdoor tile 200x200x 10mm",
+    category: "Feature Products",
+    price: "$16 .   25 units required per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra7.png",
+  },
+
+  {
+    id: "extra-8",
+    name: "Outdoor Tiles",
+    category: "Feature Products",
+    price: "$16/m² · 11 units required per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra8.png",
+  },
+
+   {
+    id: "extra-9",
+    name: "Oslo Set",
+    category: "Feature Products",
+    price: "$ 20 per m²",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra9.png",
+  },
+
+    {
+    id: "extra-10",
+    name: "3D Diamond",
+    category: "Feature Products",
+    price: "$18",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra10.png",
+  },
+
+   {
+    id: "extra-11",
+    name: "Dripstone ",
+    category: "Feature Products",
+    price: "$6",
+    size: "Custom",
+    description: "Premium architectural concrete solution.",
+    image: "/assets/extra11.png",
+  },
+
 ];
