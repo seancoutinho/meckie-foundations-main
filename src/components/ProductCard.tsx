@@ -1,6 +1,6 @@
 import type { Product } from "@/lib/products";
 
-const WA = "https://wa.me/263772000000?text=";
+const WA = "https://wa.me/263772989306?text=";
 
 export function ProductCard({ product }: { product: Product }) {
   const enquire = `${WA}${encodeURIComponent(`Hello Meckie, I'd like to enquire about: ${product.name} (${product.id}).`)}`;
@@ -20,7 +20,6 @@ export function ProductCard({ product }: { product: Product }) {
         <div>
           <p className="eyebrow">{product.category}</p>
           <h3 className="mt-2 font-display text-2xl tracking-wide">{product.name}</h3>
-          <p className="mt-2 text-xs text-muted-foreground">{product.spec}</p>
         </div>
         <div className="text-right shrink-0">
           <p className="text-sm font-medium" style={{ color: "var(--brand-orange)" }}>
