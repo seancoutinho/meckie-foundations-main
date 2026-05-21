@@ -22,7 +22,7 @@ export const Route = createFileRoute("/gallery")({
       },
       {
         property: "og:image",
-        content: "/assets/gallery-greendale.jpg",
+        content: "/assets/gallery-greendale.png",
       },
     ],
   }),

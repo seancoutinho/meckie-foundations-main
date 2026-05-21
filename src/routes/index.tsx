@@ -7,7 +7,7 @@ import { ProductCard } from "@/components/ProductCard";
 import hero from "/assets/hero-driveway.png";
 import service1 from "/assets/service-driveways.jpg";
 import service2 from "/assets/service-walls.jpg";
-import gallery from "/assets/gallery-greendale.jpg";
+import gallery from "/assets/gallery-greendale.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
