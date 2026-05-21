@@ -18,7 +18,7 @@ export function Footer() {
               lg:h-[150px]
               w-auto
               object-contain
-              mb-3
+              mb-4
             "
           />
 
